@@ -25,20 +25,26 @@ export default defineConfig({
     },
 
     server: {
-        // Ngork set up
-        //     host: 'localhost',
-        //     port: 5173,
-        //     https: {
-        //         key: fs.readFileSync('../cert/vite.key'),
-        //         cert: fs.readFileSync('../cert/vite.crt'),
-        //     },
-        //     hmr: {
-        //         protocol: 'wss', // ← pakai WSS (karena HTTPS)
-        //         host: 'localhost',
-        //         clientPort: 443,
-        //     },
-        //     cors: true,
-        // },
-        cors: true,
+            // host: 'localhost',
+            // port: 5173,
+            // https: {
+            //     key: fs.readFileSync('../cert/vite.key'),
+            //     cert: fs.readFileSync('../cert/vite.crt'),
+            // },
+            // hmr: {
+            //     protocol: 'wss', // ← pakai WSS (karena HTTPS)
+            //     host: 'localhost',
+            //     clientPort: 443,
+            // },
+            // cors: true,
+            host: 'localhost',
+            port: 5173,
+            hmr: {
+                protocol: 'wss', // ← pakai WSS (karena HTTPS)
+                host: 'localhost',
+                clientPort: 443,
+            },
+            cors: true,
+            
     },
 });
