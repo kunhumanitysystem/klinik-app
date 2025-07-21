@@ -105,6 +105,9 @@ class GuestScreeningSubmissionService
             'queue' => $newQueueNumber,
             'screening_date' => $today,
         ]);
+        if (isset($data['ktp_images'])) {
+            $patientData['ktp_images'] = $data['ktp_images'];
+        }
 
         PatientsOnline::create($patientData);
 

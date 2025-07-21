@@ -2,23 +2,25 @@
 
 namespace App\Http\Controllers\Roles\Paramedis\PhysicalExaminations;
 
-use App\Events\NewDoctorConsultationEvent;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Paramedis\updatePhysicalAttributesRequest;
-use App\Jobs\SendScreeningNotification;
-use App\Jobs\SyncPatientsToAirtable;
-use App\Models\Clinic\PhysicalExamination;
-use App\Models\EMR\MedicalRecord;
+use Inertia\Inertia;
 use App\Models\Users\Doctor;
-use App\Models\Users\Paramedis;
-use App\Models\Users\Patients;
-use App\Services\Printer\ScreeningPrintService;
-use App\Services\QrCodeService;
 use Illuminate\Http\Request;
+use App\Models\Users\Cashier;
+use App\Models\Users\Patients;
+use App\Models\Users\Paramedis;
+use App\Services\QrCodeService;
+use App\Models\EMR\MedicalRecord;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use App\Jobs\SyncPatientsToAirtable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
-use Inertia\Inertia;
+use App\Jobs\SendScreeningNotification;
+use App\Events\NewDoctorConsultationEvent;
+use App\Models\Clinic\PhysicalExamination;
+use App\Models\Notifications\Notification;
+use App\Services\Printer\ScreeningPrintService;
+use App\Http\Requests\Paramedis\updatePhysicalAttributesRequest;
 
 class PhysicalExaminationController extends Controller
 {
@@ -33,7 +35,6 @@ class PhysicalExaminationController extends Controller
 
     public function store(Request $request)
     {
-
         $user = Auth::user(); // Get the authenticated user
 
         // Validate the request data
@@ -71,7 +72,6 @@ class PhysicalExaminationController extends Controller
 
         // Generate the medical record number
         $medicalRecordNumber = $this->generateMedicalRecordNumber();
-
         // Create a new medical record
         $medicalRecord = MedicalRecord::create([
             'patient_id' => $request->patient_id,
@@ -96,7 +96,7 @@ class PhysicalExaminationController extends Controller
             // Asumsi: ada model Notification dan relasi user dokter
             $doctorUsers = Doctor::all();
             foreach ($doctorUsers as $doctor) {
-                \App\Models\Notifications\Notification::create([
+               Notification::create([
                     'user_id' => $doctor->user_id, // Pastikan kolom user_id benar
                     'type' => 'doctor_consultation',
                     'title' => 'Konsultasi Dokter Baru',
@@ -109,10 +109,6 @@ class PhysicalExaminationController extends Controller
                 ]);
             }
         }
-
-        // Dispatch a notification
-        // SendScreeningNotification::dispatch($patient);
-
         SyncPatientsToAirtable::dispatch();
 
         // Generate QR Code for patient before printing
@@ -151,13 +147,13 @@ class PhysicalExaminationController extends Controller
             'created_at' => now()->toDateTimeString(),
             'notification_type' => 'physical_exam_done',
         ];
-        \Illuminate\Support\Facades\Http::withHeaders(['Content-Type' => 'application/json'])
+        Http::withHeaders(['Content-Type' => 'application/json'])
             ->post('http://localhost:8080/notify', $notificationData);
 
         // Simpan notifikasi ke database untuk semua cashier
-        $cashiers = \App\Models\Users\Cashier::all();
+        $cashiers = Cashier::all();
         foreach ($cashiers as $cashier) {
-            \App\Models\Notifications\Notification::create([
+            Notification::create([
                 'user_id' => $cashier->user_id,
                 'type' => 'physical_exam_done',
                 'title' => 'Pemeriksaan Fisik Selesai',

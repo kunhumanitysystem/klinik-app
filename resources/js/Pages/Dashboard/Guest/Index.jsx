@@ -192,6 +192,7 @@ export default function PatientDataEntry({ questions, apiKey }) {
             const parsedData = await analyzeImage(file, apiKey);
             setData({
                 ...data,
+                ktp_images: file, // Pastikan file KTP dipertahankan
                 nik: parsedData.NIK || "",
                 name: parsedData.Nama || "",
                 place_of_birth: parsedData["Tempat Lahir"] || "",
@@ -299,21 +300,8 @@ export default function PatientDataEntry({ questions, apiKey }) {
                             {step === 1 && (
                                 <>
                                     <form
-                                        onSubmit={e => {
-                                            e.preventDefault();
-                                            const requiredFields = [
-                                                { key: 'nik', label: 'NIK' },
-                                                { key: 'name', label: 'Nama' },
-                                                { key: 'gender', label: 'Jenis Kelamin' },
-                                                { key: 'date_of_birth', label: 'Tanggal Lahir' },
-                                            ];
-                                            const missing = requiredFields.filter(f => !data[f.key]);
-                                            if (missing.length > 0) {
-                                                toast.error(`Silakan lengkapi data pasien terlebih dahulu.`);
-                                                return;
-                                            }
-                                            setShowConfirmDialog(true);
-                                        }}
+                                        // Hapus validasi dari onSubmit, biarkan hanya mencegah default
+                                        onSubmit={e => e.preventDefault()}
                                         className="space-y-4"
                                     >
                                         <Alert variant="warning">
@@ -430,7 +418,24 @@ export default function PatientDataEntry({ questions, apiKey }) {
                                             setData={setData}
                                             errors={errors}
                                         />
-                                        <Button type="submit" className="w-full">
+                                        <Button
+                                            type="button"
+                                            className="w-full"
+                                            onClick={() => {
+                                                const requiredFields = [
+                                                    { key: 'nik', label: 'NIK' },
+                                                    { key: 'name', label: 'Nama' },
+                                                    { key: 'gender', label: 'Jenis Kelamin' },
+                                                    { key: 'date_of_birth', label: 'Tanggal Lahir' },
+                                                ];
+                                                const missing = requiredFields.filter(f => !data[f.key]);
+                                                if (missing.length > 0) {
+                                                    toast.error(`Silakan lengkapi data pasien terlebih dahulu.`);
+                                                    return;
+                                                }
+                                                setShowConfirmDialog(true);
+                                            }}
+                                        >
                                             Lanjut ke Screening
                                         </Button>
                                     </form>

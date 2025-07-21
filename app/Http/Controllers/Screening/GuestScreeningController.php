@@ -24,7 +24,7 @@ class GuestScreeningController extends Controller
     {
         $viewData = $this->queryService->getScreeningPageData();
 
-        return Inertia::render('Dashboard/Guest/ScreeningOffline', $viewData);
+        return Inertia::render('Dashboard/Guest/Index', $viewData);
     }
 
     public function store(GuestScreeningRequest $request): RedirectResponse

@@ -118,7 +118,7 @@ class DatabaseSeeder extends Seeder
             AmountScreeningSeeder::class,
         ]);
         // $this->call(MedicineSeeder::class);
-        // $this->call(ScreeningStressTestSeeder::class);
+        $this->call(ScreeningStressTestSeeder::class);
 
         $this->call(MedicineSeeder::class);
         $this->call(ProductSeeder::class);

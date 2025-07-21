@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <title>Surat Pemeriksaan Kesehatan Pendakian</title>
     <link href="https://fonts.cdnfonts.com/css/aller" rel="stylesheet">
-
+    
     <style>
         @import url('https://fonts.cdnfonts.com/css/aller');
 
@@ -22,7 +22,7 @@
             width: 148mm;
             height: 210mm;
             position: relative;
-            background: url("{{ public_path('images/pdf/bg.png') }}") no-repeat;
+            background: url("https://i.ibb.co/n58srBv/Template-Screening-A5-1-1.png") no-repeat;
             background-size: 148mm 210mm;
             font-family: 'Aller', sans-serif
         }
@@ -38,6 +38,7 @@
             font-weight: 600;
             src: url("https://fonts.cdnfonts.com/css/aller") format('truetype');
         }
+
         .field {
             position: absolute;
             color: #003366;
@@ -154,15 +155,16 @@
         }
         .signature {
             position: absolute;
-            top: 135mm;
-            left: 73mm;
+            top: 20mm;
+            left: 60mm;
         }
 
         .pemeriksa {
-            top: 164mm;
-            left: 94mm;
+            top: 55.12mm;
+            left: 83mm;
             width: 30mm;
         }
+
         .qrcode {
             top: 144.5mm;
             left: 8.9mm;
@@ -171,7 +173,7 @@
             text-align: center;
         }
 
-
+        
         .qrcode img {
             max-width: 100%;
             height: auto;
@@ -184,19 +186,19 @@
         {{ $medical_record_number ?? '-' }}/SKP/KGS/KUN/{{ $bulan_romawi ?? '-' }}/2025
     </div>
     <div class="field name">
-        {{ ucwords(strtolower($screening->name ?? '-')) }}
+        Sandi
     </div>
     <div class="field age">
-        {{ $screening->age ?? '-' }}
+        16
     </div>
     <div class="field id_no">
-        {{ $screening->nik ?? '-' }}
+       373182378172387
     </div>
     <div class="field gender">
-        {{ ucwords(strtolower($screening->gender ?? '-')) }}
+        Laki laki
     </div>
     <div class="field address">
-        {{ ucwords(strtolower($screening->address ?? '-')) }}
+        Jl Desa Cipadung
     </div>
     <div class="field tinggi_badan">
         50
@@ -210,49 +212,32 @@
     <div class="field saturasi_oksigen">
         50
     </div>
-    {{-- layak untuk mendaki / medically fit --}}
     <div class="field result_1">
-        @if($screening->health_status === 'sehat')
-            <span style="font-family: 'DejaVu Sans', Arial, sans-serif;">&#10003;</span>
-        @endif
-    </div>
-    {{-- Layak dengan pendampingan medis / Fit with medical supervision --}}
+        &#10003;
     <div class="field result_2">
-        @if(
-        $screening->health_status === 'tidak_sehat' &&
-        in_array(
-            $screening->pendampingan ?? '',
-            ['pendampingan_perawat', 'pendampingan_paramedis', 'pendampingan_dokter']
-        )
-    )
-        <span style="font-family: 'DejaVu Sans', Arial, sans-serif;">&#10003;</span>
-    @endif
+        &#10003;
     </div>
     <div class="field result_3">
-        @if($screening->health_status === 'tidak_sehat' && empty($screening->pendampingan))
-            <span style="font-family: 'DejaVu Sans', Arial, sans-serif;">&#10003;</span>
-        @endif
+        &#10003;
     </div>
 
     <!-- QR Code Section -->
-<div class="field qrcode">
+<!-- <div class="field qrcode">
     @if(!empty($screening->qr_code_path))
         <img src="{{ public_path($screening->qr_code_path) }}" alt="QR Code Verifikasi" style="width: 21.5mm; height: 21.5mm;" />
     @endif
-</div>
+</div> -->
 
     <div class="field pemeriksa">
-    @if(isset($examiner_name))
-        <span>{{ $examiner_name }}</span>
-    @endif
+    sandi
     </div>
 
 
-    @if(isset($examiner_signature_path) && $examiner_signature_path)
+    <!-- @if(isset($examiner_signature_path) && $examiner_signature_path) -->
         <div class="field signature">
-            <img src="{{ $examiner_signature_path }}" style="width: 90mm; height: auto;">
+            <img src="https://i.ibb.co/FLMGZ80N/download.png" style="width: 90mm; height: auto;">
         </div>
-    @endif
+    <!-- @endif -->
 </body>
 
 </html>
