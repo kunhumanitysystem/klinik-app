@@ -62,7 +62,7 @@ class ScreeningPrintService
         ]);
 
         $filename = 'hasil_screening_'.$screening->id.'.pdf';
-        $path = storage_path('app/public/pdf/screening'.$filename);
+        $path = storage_path('app/public/pdf/screening/'.$filename);
 
         // 2. Simpan PDF ke storage
         file_put_contents($path, $pdf->output());

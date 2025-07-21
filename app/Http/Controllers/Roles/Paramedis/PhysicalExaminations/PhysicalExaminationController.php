@@ -260,6 +260,5 @@ class PhysicalExaminationController extends Controller
         Http::withHeaders(['Content-Type' => 'application/json'])
             ->post('http://localhost:8080/notify', $data);
 
-        // ... lanjutkan response/logic lain
     }
 }

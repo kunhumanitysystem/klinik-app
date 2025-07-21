@@ -9,7 +9,7 @@ import { Badge } from "@/Components/ui/badge";
 import { RefreshCcw } from "lucide-react";
 
 const ScreeningOfflineIndex = ({ screenings_offline, filters = {} }) => {
-    const { errors, flash } = usePage().props;
+    const { errors } = usePage().props;
     const [searchTerm, setSearchTerm] = useState(() => filters.search || "");
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [examiningScreening, setExaminingScreening] = useState(null);

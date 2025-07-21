@@ -247,7 +247,7 @@ class ParamedisReportController extends Controller
         // Menyusun data untuk PDF
         $data = [
             'screening' => $screening,
-            'examinations' => $examinations, // Kirim data pemeriksaan fisik
+            'examinations' => $examinations,
             'medical_record_number' => $medicalRecordNumber,
             'bulan_romawi' => $bulanRomawi,
             'examiner_name' => $examiner ? $examiner->name : null,
